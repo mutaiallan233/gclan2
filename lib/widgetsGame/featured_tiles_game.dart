@@ -130,22 +130,27 @@ class FeaturedTiles extends StatelessWidget {
                 ),
               ],*/
                 children: [
-                  StreamBuilder(
+                  StreamBuilder<QuerySnapshot>(
                       stream: db.collection('games').snapshots(),
-                      builder: (context, snapshot) {
+                      builder:
+                          (context, AsyncSnapshot<QuerySnapshot> snapshot) {
                         if (snapshot.hasData) {
                           return Row(
                             children: snapshot.data.docs.map((doc) {
                               return Column(
                                 children: [
-                                  SizedBox(
-                                    height: screenSize.width / 6,
-                                    width: screenSize.width / 3.8,
-                                    child: ClipRRect(
-                                      borderRadius: BorderRadius.circular(5.0),
-                                      child: Image.network(
-                                        doc.data()['img'],
-                                        fit: BoxFit.cover,
+                                  Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: SizedBox(
+                                      height: screenSize.width / 2.5,
+                                      width: screenSize.width / 1.5,
+                                      child: ClipRRect(
+                                        borderRadius:
+                                            BorderRadius.circular(5.0),
+                                        child: Image.network(
+                                          doc.data()['img'],
+                                          fit: BoxFit.cover,
+                                        ),
                                       ),
                                     ),
                                   ),

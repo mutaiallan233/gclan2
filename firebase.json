@@ -1,5 +1,6 @@
 {
   "hosting": {
+    "Access-Control-Allow-Origin":"*",
     "public": "build/web",
     "ignore": [
       "firebase.json",
