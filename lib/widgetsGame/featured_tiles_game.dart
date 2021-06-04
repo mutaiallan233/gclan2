@@ -1,3 +1,4 @@
+import 'package:explore/screens/value_page.dart';
 import 'package:explore/widgets/responsive.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -39,6 +40,74 @@ class FeaturedTiles extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
+                  StreamBuilder<QuerySnapshot>(
+                      stream: db.collection('games').snapshots(),
+                      builder:
+                          (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                        if (snapshot.hasData) {
+                          return Row(
+                            children: snapshot.data.docs.map((doc) {
+                              return Column(
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: SizedBox(
+                                      height: screenSize.width / 2.5,
+                                      width: screenSize.width / 1.5,
+                                      child: ClipRRect(
+                                        borderRadius:
+                                        BorderRadius.circular(5.0),
+                                        child: GestureDetector(
+                                          child: Image.network(
+                                            doc.data()['img'],
+                                            fit: BoxFit.cover,
+                                          ),
+                                          onTap: (){
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) => ValuePage(
+                                                    appBarImage: doc.data()['img'],
+                                                    appBarText: doc.data()['title'],
+                                                    uiDesign: 'gamer',
+                                                  )),
+                                            );
+                                          },
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsets.only(
+                                      top: screenSize.height / 70,
+                                    ),
+                                    child: Text(
+                                      doc.data()['title'],
+                                      style: TextStyle(
+                                        fontSize: 16,
+                                        fontFamily: 'Montserrat',
+                                        fontWeight: FontWeight.w500,
+                                        color: Theme.of(context)
+                                            .primaryTextTheme
+                                            .subtitle1
+                                            .color,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              );
+                            }).toList(),
+                          );
+                        } else
+                          return SizedBox(
+                            height: 50,
+                            child: Center(
+                              child: CircularProgressIndicator(),
+                            ),
+                          );
+                      }),
+                ],
+                /*children: [
                   SizedBox(width: screenSize.width / 15),
                   ...Iterable<int>.generate(assets.length).map(
                     (int pageIndex) => Row(
@@ -80,7 +149,7 @@ class FeaturedTiles extends StatelessWidget {
                       ],
                     ),
                   ),
-                ],
+                ],*/
               ),
             ),
           )
@@ -142,8 +211,8 @@ class FeaturedTiles extends StatelessWidget {
                                   Padding(
                                     padding: const EdgeInsets.all(8.0),
                                     child: SizedBox(
-                                      height: screenSize.width / 2.5,
-                                      width: screenSize.width / 1.5,
+                                      height: screenSize.width / 4.0,
+                                      width: screenSize.width / 3.5,
                                       child: ClipRRect(
                                         borderRadius:
                                             BorderRadius.circular(5.0),

@@ -18,11 +18,11 @@ class _FloatingQuickAccessBarState extends State<FloatingQuickAccessBar> {
   List<Widget> rowElements = [];
 
   //List<String> items = ['Destination', 'Events', 'Gamers', 'Experience'];
-  List<String> items = ['Events', 'Gamers'];
+  List<String> items = ['Quick Pay for Match', 'Fifa21 Top Player'];
   List<IconData> icons = [
     //Icons.location_on,
-    Icons.date_range,
-    Icons.people,
+    Icons.attach_money,
+    Icons.star_rate_outlined,
     //Icons.wb_sunny
   ];
 
@@ -37,7 +37,9 @@ class _FloatingQuickAccessBarState extends State<FloatingQuickAccessBar> {
             value ? _isHovering[i] = true : _isHovering[i] = false;
           });
         },
-        onTap: () {},
+
+        onTap: () {
+        },
         child: Text(
           items[i],
           style: TextStyle(
@@ -103,7 +105,17 @@ class _FloatingQuickAccessBarState extends State<FloatingQuickAccessBar> {
                               InkWell(
                                 splashColor: Colors.transparent,
                                 hoverColor: Colors.transparent,
-                                onTap: () {},
+                                onTap: () {
+                                  ///TODO: mike mpesa purchase plugin to deduct 50sh from customer
+                                  if(items[pageIndex] == 'Quick Pay for Match'){
+                                    Navigator.pushNamed(context, '/second');
+                                  }
+                                  else if (items[pageIndex] == 'Fifa21 Top Player'){
+                                    Navigator.pushNamed(context, '/third');
+                                  }
+                                  else
+                                    print('Page doesnt Exist');
+                                },
                                 child: Text(
                                   items[pageIndex],
                                   style: TextStyle(

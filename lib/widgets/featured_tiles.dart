@@ -14,6 +14,8 @@ class FeaturedTiles extends StatelessWidget {
     'assets/images/gclanserv.jpg',
     'assets/images/gclanalert.jpg',
   ];
+  final List<String> navigator = [
+  ];
 
   final List<String> title = ['PC Games', 'Services', 'Alerts'];
 
@@ -45,7 +47,14 @@ class FeaturedTiles extends StatelessWidget {
                                     fit: BoxFit.cover,
                                   ),
                                   onTap: () async {
-                                    Navigator.pushNamed(context, '/second');
+                                    if(title[pageIndex] == 'PC Games'){
+                                      Navigator.pushNamed(context, '/second');
+                                    }
+                                    else if (title[pageIndex] == 'Services'){
+                                      Navigator.pushNamed(context, '/third');
+                                    }
+                                    else
+                                      print('Page doesnt Exist');
                                   },
                                 ),
                               ),

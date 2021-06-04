@@ -3,6 +3,8 @@ import 'package:explore/screens/game_page.dart';
 import 'package:explore/screens/home_page.dart';
 import 'package:explore/screens/screen_error.dart';
 import 'package:explore/screens/screen_load.dart';
+import 'package:explore/screens/service_page.dart';
+import 'package:explore/screens/value_page.dart';
 import 'package:explore/utils/authentication.dart';
 import 'package:explore/utils/theme_data.dart';
 import 'package:flutter/material.dart';
@@ -26,6 +28,7 @@ class _MyAppState extends State<MyApp> {
   // Set default `_initialized` and `_error` state to false
   bool _initialized = false;
   bool _error = false;
+
 
   // Define an async function to initialize FlutterFire
   void initializeFlutterFire() async {
@@ -76,6 +79,8 @@ class _MyAppState extends State<MyApp> {
       initialRoute: '/',
       routes: {
         '/second': (context) => GamePage(),
+        '/third': (context) => ServicePage(),
+        '/fourth': (context) => ValuePage(),
       },
       home: HomePage(),
     );
