@@ -1,3 +1,5 @@
+import 'package:explore/utils/stkpush.dart';
+import 'package:explore/widgets/dialog.dart';
 import 'package:explore/widgets/responsive.dart';
 import 'package:flutter/material.dart';
 
@@ -106,9 +108,16 @@ class _FloatingQuickAccessBarState extends State<FloatingQuickAccessBar> {
                                 splashColor: Colors.transparent,
                                 hoverColor: Colors.transparent,
                                 onTap: () {
-                                  ///TODO: mike mpesa purchase plugin to deduct 50sh from customer
+                                  ////TODO: mike mpesa purchase plugin to deduct 50sh from customer
+                                  
                                   if(items[pageIndex] == 'Quick Pay for Match'){
-                                    Navigator.pushNamed(context, '/second');
+                                    showDialog(
+                                      barrierDismissible: true,
+                                      context: context, builder: (BuildContext context){
+                                      return Mydialog();
+                                    });
+                                    //startCheckout(userPhone:'254745476040',amount:'10');
+                                    // Navigator.pushNamed(context, '/second');
                                   }
                                   else if (items[pageIndex] == 'Fifa21 Top Player'){
                                     Navigator.pushNamed(context, '/third');
