@@ -12,6 +12,9 @@ import 'package:explore/widgets/top_bar_contents.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:google_fonts/google_fonts.dart';
+//import 'package:youtube_player_flutter/youtube_player_flutter.dart';
+import 'package:youtube_player_iframe/youtube_player_iframe.dart';
+
 ///todo: pass value to this page from clicked tile on the tile games
 
 class ValuePage extends StatefulWidget {
@@ -19,9 +22,14 @@ class ValuePage extends StatefulWidget {
   final String appBarText, appBarImage, headerTitle, headerText, uiDesign;
   //final Image img;
 
-
-  const ValuePage({Key key, this.appBarText, this.appBarImage, this.headerText, this.headerTitle, this.uiDesign}) : super(key: key);
-
+  const ValuePage(
+      {Key key,
+      this.appBarText,
+      this.appBarImage,
+      this.headerText,
+      this.headerTitle,
+      this.uiDesign})
+      : super(key: key);
 
   @override
   _ValuePageState createState() => _ValuePageState();
@@ -33,12 +41,11 @@ class _ValuePageState extends State<ValuePage> {
   double _opacity = 0;
 
   _scrollListener() {
-    if(mounted){
+    if (mounted) {
       setState(() {
         _scrollPosition = _scrollController.position.pixels;
       });
     }
-
   }
 
   @override
@@ -56,41 +63,41 @@ class _ValuePageState extends State<ValuePage> {
         ? _scrollPosition / (screenSize.height * 0.40)
         : 1;
 
-    if(widget.uiDesign == 'gamer'){
+    if (widget.uiDesign == 'gamer') {
       return Scaffold(
         backgroundColor: Theme.of(context).backgroundColor,
         extendBodyBehindAppBar: true,
         appBar: ResponsiveWidget.isSmallScreen(context)
             ? AppBar(
-          backgroundColor:
-          Theme.of(context).bottomAppBarColor.withOpacity(_opacity),
-          elevation: 0,
-          centerTitle: true,
-          actions: [
-            IconButton(
-              icon: Icon(Icons.brightness_6),
-              splashColor: Colors.transparent,
-              highlightColor: Colors.transparent,
-              onPressed: () {
-                EasyDynamicTheme.of(context).changeTheme();
-              },
-            ),
-          ],
-          title: Text(
-            widget.appBarText,
-            style: TextStyle(
-              color: Colors.blueGrey[100],
-              fontSize: 20,
-              fontFamily: 'Montserrat',
-              fontWeight: FontWeight.w400,
-              letterSpacing: 3,
-            ),
-          ),
-        )
+                backgroundColor:
+                    Theme.of(context).bottomAppBarColor.withOpacity(_opacity),
+                elevation: 0,
+                centerTitle: true,
+                actions: [
+                  IconButton(
+                    icon: Icon(Icons.brightness_6),
+                    splashColor: Colors.transparent,
+                    highlightColor: Colors.transparent,
+                    onPressed: () {
+                      EasyDynamicTheme.of(context).changeTheme();
+                    },
+                  ),
+                ],
+                title: Text(
+                  widget.appBarText,
+                  style: TextStyle(
+                    color: Colors.blueGrey[100],
+                    fontSize: 20,
+                    fontFamily: 'Montserrat',
+                    fontWeight: FontWeight.w400,
+                    letterSpacing: 3,
+                  ),
+                ),
+              )
             : PreferredSize(
-          preferredSize: Size(screenSize.width, 1000),
-          child: TopBarContents(_opacity),
-        ),
+                preferredSize: Size(screenSize.width, 1000),
+                child: TopBarContents(_opacity),
+              ),
         drawer: ExploreDrawer(),
         body: WebScrollbar(
           color: Colors.blueGrey,
@@ -117,7 +124,7 @@ class _ValuePageState extends State<ValuePage> {
                       ),
                     ),
                     Padding(
-                      padding: EdgeInsets.only(top:  screenSize.height * 0.35),
+                      padding: EdgeInsets.only(top: screenSize.height * 0.35),
                       child: Column(
                         children: [
                           /*FloatingQuickAccessBar(screenSize: screenSize),
@@ -130,25 +137,70 @@ class _ValuePageState extends State<ValuePage> {
                           ),
                         ),*/
                           StreamBuilder<DocumentSnapshot>(
-                              stream: firestore.collection('games').doc(widget.appBarText).snapshots(),
-                              builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+                              stream: firestore
+                                  .collection('games')
+                                  .doc(widget.appBarText)
+                                  .snapshots(),
+                              builder: (BuildContext context,
+                                  AsyncSnapshot<DocumentSnapshot> snapshot) {
                                 if (snapshot.hasData) {
                                   DocumentSnapshot doc = snapshot.data;
+
                                   return Container(
                                     height: 500,
                                     width: MediaQuery.of(context).size.width,
                                     child: ListView(
-                                     //children: doc.data()['gameList'].map<Widget>((d){
-                                      children: doc.data()['gameList'].keys.map<Widget>((d){
-                                        var ytLinks = doc.data()['gameList'].values;
-                                       return ListTile(
-                                         title: Text(d),
-                                         subtitle: Text('Tap to watch Game Trailer'),
-                                       );
-                                     }).toList(),
-                                 ),
-                                  );
+                                      children: doc
+                                          .data()['gameList']
+                                          .keys
+                                          .map<Widget>((d) {
+                                        return ListTile(
+                                          onTap: () {
+                                            showDialog(
+                                                context: context,
+                                                builder: (bc) {
+                                                  YoutubePlayerController
+                                                      _controller =
+                                                      YoutubePlayerController(
+                                                    initialVideoId: doc
+                                                        .data()['gameList'][d]
+                                                        .toString()
+                                                        .substring(17),
+                                                    // YoutubePlayer
+                                                    //     .convertUrlToId(doc
+                                                    //         .data()[
+                                                    //             'gameList']
+                                                    //             [d]
+                                                    //         .toString()),
+                                                    params: YoutubePlayerParams(
+                                                      startAt:
+                                                          Duration(seconds: 0),
+                                                      showControls: true,
+                                                      showFullscreenButton:
+                                                          true,
+                                                    ),
+                                                  );
+                                             
 
+                                                  return AlertDialog(
+                                                    backgroundColor:
+                                                        Colors.transparent,
+                                                 
+                                                    content:
+                                                        YoutubePlayerIFrame(
+                                                      controller: _controller,
+                                                      aspectRatio: 16 / 9,
+                                                    ),
+                                                  );
+                                                });
+                                          },
+                                          title: Text(d),
+                                          subtitle:
+                                              Text('Tap to watch Game Trailer'),
+                                        );
+                                      }).toList(),
+                                    ),
+                                  );
                                 } else {
                                   return SizedBox();
                                 }
@@ -167,42 +219,41 @@ class _ValuePageState extends State<ValuePage> {
           ),
         ),
       );
-    }
-    else if(widget.uiDesign == 'service'){
+    } else if (widget.uiDesign == 'service') {
       return Scaffold(
         backgroundColor: Theme.of(context).backgroundColor,
         extendBodyBehindAppBar: true,
         appBar: ResponsiveWidget.isSmallScreen(context)
             ? AppBar(
-          backgroundColor:
-          Theme.of(context).bottomAppBarColor.withOpacity(_opacity),
-          elevation: 0,
-          centerTitle: true,
-          actions: [
-            IconButton(
-              icon: Icon(Icons.brightness_6),
-              splashColor: Colors.transparent,
-              highlightColor: Colors.transparent,
-              onPressed: () {
-                EasyDynamicTheme.of(context).changeTheme();
-              },
-            ),
-          ],
-          title: Text(
-            widget.appBarText,
-            style: TextStyle(
-              color: Colors.blueGrey[100],
-              fontSize: 20,
-              fontFamily: 'Montserrat',
-              fontWeight: FontWeight.w400,
-              letterSpacing: 3,
-            ),
-          ),
-        )
+                backgroundColor:
+                    Theme.of(context).bottomAppBarColor.withOpacity(_opacity),
+                elevation: 0,
+                centerTitle: true,
+                actions: [
+                  IconButton(
+                    icon: Icon(Icons.brightness_6),
+                    splashColor: Colors.transparent,
+                    highlightColor: Colors.transparent,
+                    onPressed: () {
+                      EasyDynamicTheme.of(context).changeTheme();
+                    },
+                  ),
+                ],
+                title: Text(
+                  widget.appBarText,
+                  style: TextStyle(
+                    color: Colors.blueGrey[100],
+                    fontSize: 20,
+                    fontFamily: 'Montserrat',
+                    fontWeight: FontWeight.w400,
+                    letterSpacing: 3,
+                  ),
+                ),
+              )
             : PreferredSize(
-          preferredSize: Size(screenSize.width, 1000),
-          child: TopBarContents(_opacity),
-        ),
+                preferredSize: Size(screenSize.width, 1000),
+                child: TopBarContents(_opacity),
+              ),
         drawer: ExploreDrawer(),
         body: WebScrollbar(
           color: Colors.blueGrey,
@@ -252,70 +303,69 @@ class _ValuePageState extends State<ValuePage> {
           ),
         ),
       );
-    }
-    else
-    return Scaffold(
-      backgroundColor: Theme.of(context).backgroundColor,
-      extendBodyBehindAppBar: true,
-      appBar: ResponsiveWidget.isSmallScreen(context)
+    } else
+      return Scaffold(
+        backgroundColor: Theme.of(context).backgroundColor,
+        extendBodyBehindAppBar: true,
+        appBar: ResponsiveWidget.isSmallScreen(context)
             ? AppBar(
-          backgroundColor:
-          Theme.of(context).bottomAppBarColor.withOpacity(_opacity),
-          elevation: 0,
-          centerTitle: true,
-          actions: [
-            IconButton(
-              icon: Icon(Icons.brightness_6),
-              splashColor: Colors.transparent,
-              highlightColor: Colors.transparent,
-              onPressed: () {
-                EasyDynamicTheme.of(context).changeTheme();
-              },
-            ),
-          ],
-          title: Text(
-            widget.appBarText,
-            style: TextStyle(
-              color: Colors.blueGrey[100],
-              fontSize: 20,
-              fontFamily: 'Montserrat',
-              fontWeight: FontWeight.w400,
-              letterSpacing: 3,
-            ),
-          ),
-        )
+                backgroundColor:
+                    Theme.of(context).bottomAppBarColor.withOpacity(_opacity),
+                elevation: 0,
+                centerTitle: true,
+                actions: [
+                  IconButton(
+                    icon: Icon(Icons.brightness_6),
+                    splashColor: Colors.transparent,
+                    highlightColor: Colors.transparent,
+                    onPressed: () {
+                      EasyDynamicTheme.of(context).changeTheme();
+                    },
+                  ),
+                ],
+                title: Text(
+                  widget.appBarText,
+                  style: TextStyle(
+                    color: Colors.blueGrey[100],
+                    fontSize: 20,
+                    fontFamily: 'Montserrat',
+                    fontWeight: FontWeight.w400,
+                    letterSpacing: 3,
+                  ),
+                ),
+              )
             : PreferredSize(
-          preferredSize: Size(screenSize.width, 1000),
-          child: TopBarContents(_opacity),
-      ),
-      drawer: ExploreDrawer(),
-      body: WebScrollbar(
-        color: Colors.blueGrey,
-        backgroundColor: Colors.blueGrey.withOpacity(0.3),
-        width: 10,
-        heightFraction: 0.3,
-        controller: _scrollController,
-        child: SingleChildScrollView(
+                preferredSize: Size(screenSize.width, 1000),
+                child: TopBarContents(_opacity),
+              ),
+        drawer: ExploreDrawer(),
+        body: WebScrollbar(
+          color: Colors.blueGrey,
+          backgroundColor: Colors.blueGrey.withOpacity(0.3),
+          width: 10,
+          heightFraction: 0.3,
           controller: _scrollController,
-          physics: ClampingScrollPhysics(),
-          child: Column(
-            children: [
-              Stack(
-                children: [
-                  Container(
-                    child: SizedBox(
-                      height: screenSize.height * 0.35,
-                      width: screenSize.width,
-                      child: Image.network(
-                       // 'assets/images/gclanshift.jpeg',
-                        widget.appBarImage,
-                        fit: BoxFit.cover,
+          child: SingleChildScrollView(
+            controller: _scrollController,
+            physics: ClampingScrollPhysics(),
+            child: Column(
+              children: [
+                Stack(
+                  children: [
+                    Container(
+                      child: SizedBox(
+                        height: screenSize.height * 0.35,
+                        width: screenSize.width,
+                        child: Image.network(
+                          // 'assets/images/gclanshift.jpeg',
+                          widget.appBarImage,
+                          fit: BoxFit.cover,
+                        ),
                       ),
                     ),
-                  ),
-                  Column(
-                    children: [
-                      /*FloatingQuickAccessBar(screenSize: screenSize),
+                    Column(
+                      children: [
+                        /*FloatingQuickAccessBar(screenSize: screenSize),
                       Container(
                         child: Column(
                           children: [
@@ -324,18 +374,18 @@ class _ValuePageState extends State<ValuePage> {
                           ],
                         ),
                       ),*/
-                    ],
-                  )
-                ],
-              ),
-              //DestinationHeading(screenSize: screenSize),
-              //DestinationCarousel(),
-              SizedBox(height: screenSize.height / 10),
-              BottomBar(),
-            ],
+                      ],
+                    )
+                  ],
+                ),
+                //DestinationHeading(screenSize: screenSize),
+                //DestinationCarousel(),
+                SizedBox(height: screenSize.height / 10),
+                BottomBar(),
+              ],
+            ),
           ),
         ),
-      ),
-    );
+      );
   }
 }

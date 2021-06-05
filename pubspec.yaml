@@ -24,6 +24,8 @@ dependencies:
   shared_preferences: ^2.0.5
   fluttertoast: ^8.0.3
   google_fonts:
+  youtube_player_flutter: ^8.0.0
+  youtube_player_iframe: ^2.0.0
   mpesa_plugin:
     git:
       url: https://github.com/myke254/stkpush.git
