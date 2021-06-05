@@ -10,6 +10,8 @@ import 'package:explore/widgets/floating_quick_access_bar.dart';
 import 'package:explore/widgets/responsive.dart';
 import 'package:explore/widgets/top_bar_contents.dart';
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:google_fonts/google_fonts.dart';
 ///todo: pass value to this page from clicked tile on the tile games
 
 class ValuePage extends StatefulWidget {
@@ -46,6 +48,7 @@ class _ValuePageState extends State<ValuePage> {
     super.initState();
   }
 
+  FirebaseFirestore firestore = FirebaseFirestore.instance;
   @override
   Widget build(BuildContext context) {
     var screenSize = MediaQuery.of(context).size;
@@ -113,18 +116,45 @@ class _ValuePageState extends State<ValuePage> {
                         ),
                       ),
                     ),
-                    Column(
-                      children: [
-                        /*FloatingQuickAccessBar(screenSize: screenSize),
-                      Container(
-                        child: Column(
-                          children: [
-                            FeaturedHeading(screenSize: screenSize),
-                            FeaturedTiles(screenSize: screenSize)
-                          ],
-                        ),
-                      ),*/
-                      ],
+                    Padding(
+                      padding: EdgeInsets.only(top:  screenSize.height * 0.35),
+                      child: Column(
+                        children: [
+                          /*FloatingQuickAccessBar(screenSize: screenSize),
+                        Container(
+                          child: Column(
+                            children: [
+                              FeaturedHeading(screenSize: screenSize),
+                              FeaturedTiles(screenSize: screenSize)
+                            ],
+                          ),
+                        ),*/
+                          StreamBuilder<DocumentSnapshot>(
+                              stream: firestore.collection('games').doc(widget.appBarText).snapshots(),
+                              builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+                                if (snapshot.hasData) {
+                                  DocumentSnapshot doc = snapshot.data;
+                                  return Container(
+                                    height: 500,
+                                    width: MediaQuery.of(context).size.width,
+                                    child: ListView(
+                                     //children: doc.data()['gameList'].map<Widget>((d){
+                                      children: doc.data()['gameList'].keys.map<Widget>((d){
+                                        var ytLinks = doc.data()['gameList'].values;
+                                       return ListTile(
+                                         title: Text(d),
+                                         subtitle: Text('Tap to watch Game Trailer'),
+                                       );
+                                     }).toList(),
+                                 ),
+                                  );
+
+                                } else {
+                                  return SizedBox();
+                                }
+                              }),
+                        ],
+                      ),
                     )
                   ],
                 ),

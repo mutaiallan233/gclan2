@@ -1,7 +1,7 @@
 import 'package:explore/utils/stkpush.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:fluttertoast/fluttertoast.dart';
+//import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 class Mydialog extends StatefulWidget {
   // final Function startcheck;
@@ -135,7 +135,7 @@ class _MydialogState extends State<Mydialog> {
           actions: [
             TextButton(
               onPressed: () async {
-                if (formkey.currentState.validate()) {
+               /* if (formkey.currentState.validate()) {
                   sharedPreferences = await SharedPreferences.getInstance();
                   sharedPreferences.setString(
                       'remphoneNumber', phoneController.text);
@@ -170,7 +170,7 @@ class _MydialogState extends State<Mydialog> {
                   print('not empty');
                 } else {
                   print('controller is empty');
-                }
+                }*/
               },
               child: Text(
                 'Pay now',
