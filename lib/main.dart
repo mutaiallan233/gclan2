@@ -7,8 +7,10 @@ import 'package:explore/screens/service_page.dart';
 import 'package:explore/screens/value_page.dart';
 import 'package:explore/utils/authentication.dart';
 import 'package:explore/utils/theme_data.dart';
+import 'package:explore/widgetsService/staggered_grid.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -83,6 +85,7 @@ class _MyAppState extends State<MyApp> {
         '/fourth': (context) => ValuePage(),
       },
       home: HomePage(),
+      //home: InstagramSearchGrid(),
     );
   }
 }

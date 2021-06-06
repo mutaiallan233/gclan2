@@ -39,8 +39,7 @@ class _ValuePageState extends State<ValuePage> {
   ScrollController _scrollController;
   double _scrollPosition = 0;
   double _opacity = 0;
-  YoutubePlayerController
-                                                      _controller;
+
   _scrollListener() {
     if (mounted) {
       setState(() {
@@ -48,11 +47,7 @@ class _ValuePageState extends State<ValuePage> {
       });
     }
   }
-@override
-  void dispose() {
-    _controller.close();
-    super.dispose();
-  }
+
   @override
   void initState() {
     _scrollController = ScrollController();
@@ -164,7 +159,8 @@ class _ValuePageState extends State<ValuePage> {
                                             showDialog(
                                                 context: context,
                                                 builder: (bc) {
-                                                  
+                                                  YoutubePlayerController
+                                                      // ignore: close_sinks
                                                       _controller =
                                                       YoutubePlayerController(
                                                     initialVideoId: doc
@@ -178,7 +174,6 @@ class _ValuePageState extends State<ValuePage> {
                                                     //             [d]
                                                     //         .toString()),
                                                     params: YoutubePlayerParams(
-                                                      autoPlay: false,
                                                       startAt:
                                                           Duration(seconds: 0),
                                                       showControls: true,
@@ -186,12 +181,12 @@ class _ValuePageState extends State<ValuePage> {
                                                           true,
                                                     ),
                                                   );
-
-                                                  
+                                             
 
                                                   return AlertDialog(
                                                     backgroundColor:
                                                         Colors.transparent,
+                                                 
                                                     content:
                                                         YoutubePlayerIFrame(
                                                       controller: _controller,
