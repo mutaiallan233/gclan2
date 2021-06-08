@@ -9,6 +9,7 @@ import 'package:explore/widgets/featured_tiles.dart';
 import 'package:explore/widgets/floating_quick_access_bar.dart';
 import 'package:explore/widgets/responsive.dart';
 import 'package:explore/widgets/top_bar_contents.dart';
+import 'package:explore/widgetsService/staggered_grid.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -282,6 +283,41 @@ class _ValuePageState extends State<ValuePage> {
                     ),
                     Column(
                       children: [
+                        StreamBuilder<DocumentSnapshot>(
+                            stream: firestore
+                                .collection('services')
+                                .doc('Purchase PC')
+                                .snapshots(),
+                            builder: (BuildContext context,
+                                AsyncSnapshot<DocumentSnapshot> snapshot) {
+                              if (snapshot.hasData) {
+                                DocumentSnapshot doc = snapshot.data;
+                                return Padding(
+                                  padding: EdgeInsets.only(top: screenSize.height * 0.35),
+                                  child: Container(
+                                    height: 500,
+                                    width: MediaQuery.of(context).size.width,
+                                    child: GridView.count(
+                                      mainAxisSpacing: 12.0,
+                                      crossAxisSpacing: 12.0,
+                                      crossAxisCount: 2,
+                                      children: doc
+                                          .data()['categories']
+                                          .keys
+                                          .map<Widget>((d) {
+                                        return ClipRRect(
+                                          borderRadius: BorderRadius.circular(16.0),
+                                          child: Image.network(doc
+                                              .data()['categories'][d], fit: BoxFit.cover),
+                                        );
+                                      }).toList(),
+                                    ),
+                                  ),
+                                );
+                              } else {
+                                return SizedBox();
+                              }
+                            }),
                         /*FloatingQuickAccessBar(screenSize: screenSize),
                       Container(
                         child: Column(
