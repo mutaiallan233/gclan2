@@ -1,6 +1,7 @@
 import 'package:explore/utils/stkpush.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 //import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 class Mydialog extends StatefulWidget {
@@ -42,21 +43,24 @@ class _MydialogState extends State<Mydialog> {
   TextStyle style = TextStyle(fontSize: 12);
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(top: 200,bottom: 200,left: 50,right: 50),
-      child: Card(
-        elevation: 0,
-        color: Colors.transparent,
-        child: CupertinoAlertDialog(
-          title: Padding(
-            padding: const EdgeInsets.all(10.0),
-            child: Form(
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Card(elevation:0,color:Colors.transparent,child: IconButton(onPressed: (){Navigator.of(context).pop();}, icon: Icon(Icons.cancel))),
+        Card(
+          elevation: 0,
+          color: Colors.transparent,
+          child: CupertinoAlertDialog(
+            title: Form(
               autovalidateMode: AutovalidateMode.disabled,
               key: formkey,
               child: Column(
                 children: [
+
                   TextFormField(
-                     
+
                     // ignore: missing_return
                     validator: (value) {
                       if ((value).isEmpty) {
@@ -92,95 +96,96 @@ class _MydialogState extends State<Mydialog> {
                         phonenumber != null ? phoneController : phoneController
                           ..text = phonenumber,
                     decoration: InputDecoration(
-                      hintText: phonenumber != null
+                      hintText: phonenumber.isNotEmpty
                           ? phonenumber
                           : 'enter phone number',
                       hintStyle: style,
                     ),
                   ),
-                 
+
                 ],
               ),
             ),
-          ),
-          content: CheckboxListTile(
-            title: Text(
-              'remember my number',
-              style: style,
-            ),
-            secondary: Icon(Icons.phone_android_outlined),
-            value: _isChecked,
-            controlAffinity: ListTileControlAffinity.leading,
-            activeColor: Colors.blue,
-            checkColor: Colors.green,
-            onChanged: (val) {
-              if (formkey.currentState.validate()) {
-                setState(() {
-                  _isChecked = val;
-                });
-                print(_isChecked);
-                val
-                    ? setState(() {
-                        phoneController.text != null
-                            ? phonenumber = phoneController.text
-                            : print('isChecked' + _isChecked.toString());
-                      })
-                    : setState(() {
-                        phonenumber = null;
-                        print(phoneController.text);
-                      });
-              }
-            },
-          ),
-          actions: [
-            TextButton(
-              onPressed: () async {
-               /* if (formkey.currentState.validate()) {
-                  sharedPreferences = await SharedPreferences.getInstance();
-                  sharedPreferences.setString(
-                      'remphoneNumber', phoneController.text);
-                  
-                    startCheckout(userPhone:'254'+phoneController.text.substring(1),amount:'50').then((value) {
-                      Navigator.of(context).pop();
-                    });
-                   // widget.startcheck();
-                  // });
-                  _isChecked
-                      ? sharedPreferences
-                          .setString('remphoneNumber', phoneController.text)
-                          .then((value) {
-                          print('phone number is: ' + phoneController.text);
-                          print('checked is: ' + _isChecked.toString());
-                          Fluttertoast.showToast(
-                                  msg:
-                                      'We Won\'t ask you for your phone number next time😀')
-                              .then((value) => Fluttertoast.showToast(
-                                  msg:
-                                      'please follow prompt to complete payment'));
-                        })
-                      : sharedPreferences.remove('remphoneNumber').then((value) {
-                          Fluttertoast.showToast(msg: 'We won\'t remember that ☺')
-                              .then((value) => Fluttertoast.showToast(
-                                  msg:
-                                      'please follow prompt to complete payment'));
-                          print(sharedPreferences.get('phoneNumber'));
-                          print('cleared');
-                        });
-
-                  print('not empty');
-                } else {
-                  print('controller is empty');
-                }*/
-              },
-              child: Text(
-                'Pay now',
+            content: CheckboxListTile(
+              title: Text(
+                'remember my number',
                 style: style,
               ),
+              secondary: Icon(Icons.phone_android_outlined),
+              value: _isChecked,
+              controlAffinity: ListTileControlAffinity.leading,
+              activeColor: Colors.blue,
+              checkColor: Colors.green,
+              onChanged: (val) {
+                if (formkey.currentState.validate()) {
+                  setState(() {
+                    _isChecked = val;
+                  });
+                  print(_isChecked);
+                  val
+                      ? setState(() {
+                          phoneController.text != null
+                              ? phonenumber = phoneController.text
+                              : print('isChecked' + _isChecked.toString());
+                        })
+                      : setState(() {
+                          phonenumber = null;
+                          print(phoneController.text);
+                        });
+                }
+              },
             ),
-            
-          ],
+            actions: [
+              TextButton(
+                onPressed: () async {
+                  if (formkey.currentState.validate()) {
+                    sharedPreferences = await SharedPreferences.getInstance();
+                    sharedPreferences.setString(
+                        'remphoneNumber', phoneController.text);
+
+                      startCheckout(userPhone:'254'+phoneController.text.substring(1),amount:'50').then((value) {
+                        Navigator.of(context).pop();
+                      });
+
+                    _isChecked
+                        ? sharedPreferences
+                            .setString('remphoneNumber', phoneController.text)
+                            .then((value) {
+                            print('phone number is: ' + phoneController.text);
+                            print('checked is: ' + _isChecked.toString());
+                            Fluttertoast.showToast(
+                              timeInSecForIosWeb: 2,
+                                    msg:
+                                        'We Won\'t ask you for your phone number next time😀')
+                                .then((value) => Fluttertoast.showToast(
+                                timeInSecForIosWeb: 3,
+                                    msg:
+                                        'please follow prompt to complete payment'));
+                          })
+                        : sharedPreferences.remove('remphoneNumber').then((value) {
+                            Fluttertoast.showToast(msg: 'We won\'t remember that ☺')
+                                .then((value) => Fluttertoast.showToast(
+                                    msg:
+                                        'please follow prompt to complete payment'));
+                            print(sharedPreferences.get('phoneNumber'));
+                            print('cleared');
+                          });
+
+                    print('not empty');
+                  } else {
+                    print('controller is empty');
+                  }
+                },
+                child: Text(
+                  'Pay now',
+                  style: style,
+                ),
+              ),
+
+            ],
+          ),
         ),
-      ),
+      ],
     );
   }
 }

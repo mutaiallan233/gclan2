@@ -168,12 +168,7 @@ class _ValuePageState extends State<ValuePage> {
                                                         .data()['gameList'][d]
                                                         .toString()
                                                         .substring(17),
-                                                    // YoutubePlayer
-                                                    //     .convertUrlToId(doc
-                                                    //         .data()[
-                                                    //             'gameList']
-                                                    //             [d]
-                                                    //         .toString()),
+
                                                     params: YoutubePlayerParams(
                                                       startAt:
                                                           Duration(seconds: 0),
@@ -184,14 +179,17 @@ class _ValuePageState extends State<ValuePage> {
                                                   );
                                              
 
-                                                  return AlertDialog(
-                                                    backgroundColor:
-                                                        Colors.transparent,
-                                                 
-                                                    content:
+                                                  return Padding(
+                                                    padding: const EdgeInsets.only(top: 40,left: 12,right: 12),
+                                                    child: Column(
+
+                                                      children: [
+                                                        Card(color: Colors.transparent,elevation: 0,child: Container(height:50,width: 50, child: IconButton(onPressed: (){Navigator.of(context).pop();}, icon: Icon(Icons.cancel)))),
                                                         YoutubePlayerIFrame(
-                                                      controller: _controller,
-                                                      aspectRatio: 16 / 9,
+                                                            controller: _controller,
+                                                            aspectRatio: 16 / 9,
+                                                          ),
+                                                      ],
                                                     ),
                                                   );
                                                 });
@@ -286,7 +284,7 @@ class _ValuePageState extends State<ValuePage> {
                         StreamBuilder<DocumentSnapshot>(
                             stream: firestore
                                 .collection('services')
-                                .doc('Purchase PC')
+                                .doc(widget.appBarText)
                                 .snapshots(),
                             builder: (BuildContext context,
                                 AsyncSnapshot<DocumentSnapshot> snapshot) {
@@ -305,10 +303,39 @@ class _ValuePageState extends State<ValuePage> {
                                           .data()['categories']
                                           .keys
                                           .map<Widget>((d) {
-                                        return ClipRRect(
-                                          borderRadius: BorderRadius.circular(16.0),
-                                          child: Image.network(doc
-                                              .data()['categories'][d], fit: BoxFit.cover),
+                                        return Card(
+                                          elevation: 5,
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(16.0),
+                                          ),
+                                          child: Column(
+                                            children: [
+                                              Expanded(
+                                                flex:2,
+                                                /*child: Image.network(
+                                                    doc.data()['categories'][d],
+                                                    fit: BoxFit.fill
+                                                ),*/
+                                                child: Container(
+                                                  width: MediaQuery.of(context).size.width,
+                                                  height: 100,
+                                                  decoration: BoxDecoration(
+                                                    image: DecorationImage(
+                                                      fit: BoxFit.fill,
+                                                      image: NetworkImage(doc.data()['categories'][d]),
+                                                    ),
+                                                  ),
+                                                )
+                                                ,
+                                              ),
+                                              Expanded(
+                                                  flex:1,
+                                                  child: ListTile(
+                                                    title: Text(d,textAlign:TextAlign.center, style: GoogleFonts.monda(),overflow:TextOverflow.ellipsis),
+                                                  ),
+                                              ),
+                                            ],
+                                          ),
                                         );
                                       }).toList(),
                                     ),

@@ -1,5 +1,5 @@
 import 'package:mpesa_plugin/initSTKpush.dart';
-
+bool resultIsEmpty = true;
   Future<void> startCheckout({String userPhone, String amount}) async {
     dynamic transactionInit;
     try {
@@ -27,7 +27,7 @@ import 'package:mpesa_plugin/initSTKpush.dart';
       if (result.keys.contains('ResponseCode')) {
         String mResponseCode = result['ResponseCode'];
         print('resulting code: ' + mResponseCode);
-
+        resultIsEmpty = false;
        
       }
       print('transaction result: \n' + transactionInit.toString());
