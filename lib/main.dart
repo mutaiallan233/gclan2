@@ -1,4 +1,5 @@
 import 'package:easy_dynamic_theme/easy_dynamic_theme.dart';
+import 'package:explore/screens/dataTable.dart';
 import 'package:explore/screens/game_page.dart';
 import 'package:explore/screens/home_page.dart';
 import 'package:explore/screens/screen_error.dart';
@@ -83,6 +84,7 @@ class _MyAppState extends State<MyApp> {
         '/second': (context) => GamePage(),
         '/third': (context) => ServicePage(),
         '/fourth': (context) => ValuePage(),
+        '/fifth': (context) => InfoTable(),
       },
       home: HomePage(),
       //home: InstagramSearchGrid(),

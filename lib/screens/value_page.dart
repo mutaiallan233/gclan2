@@ -303,38 +303,43 @@ class _ValuePageState extends State<ValuePage> {
                                           .data()['categories']
                                           .keys
                                           .map<Widget>((d) {
-                                        return Card(
-                                          elevation: 5,
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.circular(16.0),
-                                          ),
-                                          child: Column(
-                                            children: [
-                                              Expanded(
-                                                flex:2,
-                                                /*child: Image.network(
-                                                    doc.data()['categories'][d],
-                                                    fit: BoxFit.fill
-                                                ),*/
-                                                child: Container(
-                                                  width: MediaQuery.of(context).size.width,
-                                                  height: 100,
-                                                  decoration: BoxDecoration(
-                                                    image: DecorationImage(
-                                                      fit: BoxFit.fill,
-                                                      image: NetworkImage(doc.data()['categories'][d]),
+                                        return GestureDetector(
+                                          onTap: (){
+                                            Navigator.pushNamed(context, '/fifth');
+                                          },
+                                          child: Card(
+                                            elevation: 5,
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius: BorderRadius.circular(16.0),
+                                            ),
+                                            child: Column(
+                                              children: [
+                                                Expanded(
+                                                  flex:2,
+                                                  /*child: Image.network(
+                                                      doc.data()['categories'][d],
+                                                      fit: BoxFit.fill
+                                                  ),*/
+                                                  child: Container(
+                                                    width: MediaQuery.of(context).size.width,
+                                                    height: 100,
+                                                    decoration: BoxDecoration(
+                                                      image: DecorationImage(
+                                                        fit: BoxFit.fill,
+                                                        image: NetworkImage(doc.data()['categories'][d]),
+                                                      ),
                                                     ),
-                                                  ),
-                                                )
-                                                ,
-                                              ),
-                                              Expanded(
-                                                  flex:1,
-                                                  child: ListTile(
-                                                    title: Text(d,textAlign:TextAlign.center, style: GoogleFonts.monda(),overflow:TextOverflow.ellipsis),
-                                                  ),
-                                              ),
-                                            ],
+                                                  )
+                                                  ,
+                                                ),
+                                                Expanded(
+                                                    flex:1,
+                                                    child: ListTile(
+                                                      title: Text(d,textAlign:TextAlign.center, style: GoogleFonts.monda(),overflow:TextOverflow.ellipsis),
+                                                    ),
+                                                ),
+                                              ],
+                                            ),
                                           ),
                                         );
                                       }).toList(),
