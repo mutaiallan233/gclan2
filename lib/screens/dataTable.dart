@@ -3,16 +3,10 @@ import 'package:explore/widgetsService/staggered_grid.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_dynamic_theme/easy_dynamic_theme.dart';
 import 'package:explore/widgets/web_scrollbar.dart';
-import 'package:explore/widgets/bottom_bar.dart';
-import 'package:explore/widgets/carousel.dart';
-import 'package:explore/widgets/destination_heading.dart';
 import 'package:explore/widgets/explore_drawer.dart';
-import 'package:explore/widgets/featured_heading.dart';
-import 'package:explore/widgets/featured_tiles.dart';
-import 'package:explore/widgets/floating_quick_access_bar.dart';
 import 'package:explore/widgets/responsive.dart';
 import 'package:explore/widgets/top_bar_contents.dart';
-import 'package:flutter/material.dart';
+
 
 class InfoTable extends StatefulWidget {
   //static const String route = '/';
