@@ -16,6 +16,8 @@ import 'package:google_fonts/google_fonts.dart';
 //import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 import 'package:youtube_player_iframe/youtube_player_iframe.dart';
 
+import 'dataTable.dart';
+
 ///todo: pass value to this page from clicked tile on the tile games
 
 class ValuePage extends StatefulWidget {
@@ -305,7 +307,16 @@ class _ValuePageState extends State<ValuePage> {
                                           .map<Widget>((d) {
                                         return GestureDetector(
                                           onTap: (){
-                                            Navigator.pushNamed(context, '/fifth');
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) => InfoTable(
+                                                    appBarImage: widget.appBarImage,
+                                                    appBarText: widget.appBarText,
+                                                   // uiDesign: 'gamer',
+                                                  )),
+                                            );
+                                           // Navigator.pushNamed(context, '/fifth');
                                           },
                                           child: Card(
                                             elevation: 5,
